@@ -1,3 +1,7 @@
+I had some trouble deploying a telegraf instance to get my metrics from TrueNAS to my InfluxDB. This repository contains some examples to get this thing running with the first informations provided in this Subreddit: https://www.reddit.com/r/homelab/comments/13rxlux/telegraf_on_truenas_scale/ 
+
+The problem was, that my TrueNAS Instance didn't provide any of the tools suggested here, so I needed to customize my own image to get this working. 
+
 # Preparation
 
 ## Creating the new base image with Debian
@@ -40,9 +44,15 @@ After the base image was created it is possible to create the telegraf image wit
 
 - cd into the root of this repo and build the image for the custom telegraf container with zfs-tools 
 - Build and push it: `docker build -f Dockerfile . -t <registry>/<path>/telegraf-tns-zfs:1.2` && `docker push <registry>/<path>/telegraf-tns-zfs:1.2`
+
+
+# Deployment 
+
+- create a folder on the dataset, where you want to mount the paths with the script first: `cd /mnt/dataset/truenas-apps/` for example and create a path `mkdir telegraf`. 
+- After that go into that path and run the script: `cd /mnt/dataset/truenas-apps/telegraf` (--> `vim setup.sh` and after this `chmod +x setup.sh` and `bash setup.sh`). 
 - Add the content from the container.yaml in TrueNAS under `Apps` > `Discover Apps` > `Install YAML` - Dont forget to change it to your environment (hdd)!
 
-## Influx
+# InfluxDB
 
 - Create the bucket if needed and check if data comes in. 
 
