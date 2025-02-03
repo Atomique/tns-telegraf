@@ -1,0 +1,39 @@
+services:
+    telegraf:
+        container_name: telegraf
+        image: <registry>/<path>/telegraf-tns-zfs:1.2
+        restart: unless-stopped
+        devices:
+          - /dev/sda
+          - /dev/sdb
+          - /dev/sdc
+          - /dev/sdd
+          - /dev/sde
+          - /dev/sdf
+          - /dev/sdg
+          - /dev/sdh
+          - /dev/vda
+          - /dev/vdb
+        environment: 
+          - HOST_ETC=/hostfs/etc
+          - HOST_PROC=/hostfs/proc
+          - HOST_SYS=/hostfs/sys
+          - HOST_VAR=/hostfs/var
+          - HOST_RUN=/hostfs/run
+          - HOST_MOUNT_PREFIX=/hostfs
+          - LD_LIBRARY_PATH=/mnt/zfs_libs
+          - HOST_ROOT=/hostfs/
+          - HOST_MNT=/hostfs/mnt
+        volumes:
+          - /run/udev:/run/udev:ro
+          - /mnt/dataset/truenas-apps/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf
+          - /mnt/dataset/truenas-apps/telegraf/etc:/hostfs/etc:ro
+          - /mnt/dataset/truenas-apps/telegraf/proc:/hostfs/proc:ro
+          - /mnt/dataset/truenas-apps/telegraf/sys:/hostfs/sys:ro
+          - /mnt/dataset/truenas-apps/telegraf/run:/hostfs/run:ro
+          - /mnt/dataset/truenas-apps/telegraf/zfs_libs:/mnt/zfs_libs
+          - /mnt/dataset/truenas-apps/telegraf/var:/hostfs/var:ro
+          - /mnt/dataset/truenas-apps/telegraf/mnt:/hostfs/mnt:ro
+        privileged: true
+        ports:
+          - 10000:10000
